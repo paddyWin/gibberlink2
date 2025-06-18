@@ -132,7 +132,9 @@ export function ConvAI() {
 
     useEffect(() => {
         setMounted(true);
-        setSessionId(`session_${Date.now()}_${Math.random().toString(36).slice(2)}`);
+        if (typeof window !== 'undefined') {
+            setSessionId(`session_${Date.now()}_${Math.random().toString(36).slice(2)}`);
+        }
 
         const handleRecordingMessage = async (message: string) => {
             if (isProcessingInput) return; // ignore or queue up
