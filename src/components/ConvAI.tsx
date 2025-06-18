@@ -57,6 +57,7 @@ export function ConvAI() {
     const [isLoading, setIsLoading] = useState(false)
     const [latestUserMessage, setLatestUserMessage] = useState<string>('')
     const [sessionId, setSessionId] = useState<string>('');
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
     const [llmChat, setLLMChat] = useState<Message[]>([
         { role: 'system', content: SYSTEM_MESSAGES[agentType] }
     ]);
@@ -296,7 +297,7 @@ export function ConvAI() {
     return (
         <>
             <Script src="/ggwave/ggwave.js" strategy="afterInteractive" />
-            <div className="fixed inset-0" suppressHydrationWarning={true}>
+            <div className="fixed inset-0">
                 {latestUserMessage && (
                     <div 
                         key={`message-${latestUserMessage}`}
@@ -318,7 +319,7 @@ export function ConvAI() {
                     </div>
                 )}
                 
-                <div className="h-full w-full flex items-center justify-center" suppressHydrationWarning={true}>
+                <div className="h-full w-full flex items-center justify-center">
                     <div id="audioviz" style={{ marginLeft: "-150px", width: "400px", height: "300px", display: glMode ? 'block' : 'none' }} />
                     {!glMode && <div className={cn('orb',
                         isSpeaking ? 'animate-orb' : (conversation && 'animate-orb-slow'),
@@ -337,7 +338,7 @@ export function ConvAI() {
                 </div>
 
                 {mounted && (
-                    <div className="fixed bottom-[40px] md:bottom-[60px] left-1/2 transform -translate-x-1/2" suppressHydrationWarning={true}>
+                    <div className="fixed bottom-[40px] md:bottom-[60px] left-1/2 transform -translate-x-1/2">
                         <Button
                             variant={'outline'}
                             className={'rounded-full select-none'}
