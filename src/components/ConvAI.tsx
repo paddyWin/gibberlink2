@@ -93,9 +93,9 @@ export function ConvAI() {
                 content: message
             }]);
         }
-    }, [glMode, setLLMChat]);
+    }, [glMode]);
 
-    const genMyNextMessage = useCallback(async (messages: Message[] = llmChat): Promise<string> => {
+    const genMyNextMessage = useCallback(async (messages: Message[]): Promise<string> => {
         try {
             const response = await fetch('/api/chat', {
                 method: 'POST',
@@ -128,7 +128,7 @@ export function ConvAI() {
             console.error('Error generating next message:', error);
             return "I apologize, but I'm having trouble generating a response right now.";
         }
-    }, [llmChat, agentType, sessionId]);
+    }, [agentType, sessionId]);
 
     useEffect(() => {
         setMounted(true);
@@ -138,16 +138,21 @@ export function ConvAI() {
             if (isProcessingInput) return; // ignore or queue up
             setIsProcessingInput(true);
             try {
-                // Create new messages array with user message
-                const newMessages = [...llmChat, { role: 'user' as const, content: '[GL MODE]: ' + message }];
-                // Update state with new messages
-                setLLMChat(newMessages);
+                // Create new message
+                const newMessage = { role: 'user' as const, content: '[GL MODE]: ' + message };
+                let updatedMessages: Message[] = [];
+                
+                // Update state with new messages using functional update
+                setLLMChat(prevChat => {
+                    updatedMessages = [...prevChat, newMessage];
+                    return updatedMessages;
+                });
                 setGlMode(true);
 
                 await endConversation();
 
                 // Pass the updated messages to genMyNextMessage
-                const nextMessage = await genMyNextMessage(newMessages);
+                const nextMessage = await genMyNextMessage(updatedMessages);
                 setLatestUserMessage(nextMessage);
                 sendAudioMessage(nextMessage, agentType === 'inbound');
             } finally {
@@ -159,7 +164,7 @@ export function ConvAI() {
         return () => {
             audioMessageEmitter.off('recordingMessage', handleRecordingMessage);
         };
-    }, [endConversation, genMyNextMessage, setLLMChat, setLatestUserMessage, setGlMode, isProcessingInput, llmChat, agentType]);
+    }, [isProcessingInput, agentType]);
 
     // Initialize AudioMotion-Analyzer when glMode is activated
     useEffect(() => {
