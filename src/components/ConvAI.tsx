@@ -56,7 +56,7 @@ export function ConvAI() {
     const [agentType, setAgentType] = useState<'inbound' | 'outbound'>('inbound')
     const [isLoading, setIsLoading] = useState(false)
     const [latestUserMessage, setLatestUserMessage] = useState<string>('')
-    const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).slice(2)}`);
+    const [sessionId, setSessionId] = useState<string>('');
     const [llmChat, setLLMChat] = useState<Message[]>([
         { role: 'system', content: SYSTEM_MESSAGES[agentType] }
     ]);
@@ -132,6 +132,7 @@ export function ConvAI() {
 
     useEffect(() => {
         setMounted(true);
+        setSessionId(`session_${Date.now()}_${Math.random().toString(36).slice(2)}`);
 
         const handleRecordingMessage = async (message: string) => {
             if (isProcessingInput) return; // ignore or queue up
