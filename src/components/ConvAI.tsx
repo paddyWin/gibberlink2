@@ -53,9 +53,7 @@ export function ConvAI() {
     const [conversation, setConversation] = useState<Conversation | null>(null)
     const [isConnected, setIsConnected] = useState(false)
     const [isSpeaking, setIsSpeaking] = useState(false)
-    let init_agent_type = Math.random() < 0.5 ? 'inbound' : 'outbound'
-    init_agent_type = 'inbound'
-    const [agentType, setAgentType] = useState<'inbound' | 'outbound'>(init_agent_type)
+    const [agentType, setAgentType] = useState<'inbound' | 'outbound'>('inbound')
     const [isLoading, setIsLoading] = useState(false)
     const [latestUserMessage, setLatestUserMessage] = useState<string>('')
     const [sessionId] = useState(() => `session_${Date.now()}_${Math.random().toString(36).slice(2)}`);
@@ -66,19 +64,7 @@ export function ConvAI() {
     const [isProcessingInput, setIsProcessingInput] = useState(false);
     const audioMotionRef = useRef<AudioMotionAnalyzer | null>(null);
 
-    if (false)
-    useEffect(() => {
-        console.log('DEBUG')
-        setGlMode(true);
-        setConversation(null);
-        startRecording();
 
-        setTimeout(() => {
-            const msg = agentType === 'inbound' ? 'Hey there? how are you?' : 'Hello hello AI-buddy!'
-            setLatestUserMessage(msg)
-            sendAudioMessage(msg, agentType === 'inbound');
-        }, 5000);
-    }, [])
 
 
     const endConversation = useCallback(async () => {
@@ -219,7 +205,7 @@ export function ConvAI() {
                 }
             };
         }
-    }, [glMode, mounted]);
+    }, [glMode, mounted, agentType]);
 
     async function startConversation() {
         setIsLoading(true)
