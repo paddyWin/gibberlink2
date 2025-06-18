@@ -296,7 +296,7 @@ export function ConvAI() {
     return (
         <>
             <Script src="/ggwave/ggwave.js" strategy="afterInteractive" />
-            <div className="fixed inset-0">
+            <div className="fixed inset-0" suppressHydrationWarning={true}>
                 {latestUserMessage && (
                     <div 
                         key={`message-${latestUserMessage}`}
@@ -318,7 +318,7 @@ export function ConvAI() {
                     </div>
                 )}
                 
-                <div className="h-full w-full flex items-center justify-center">
+                <div className="h-full w-full flex items-center justify-center" suppressHydrationWarning={true}>
                     <div id="audioviz" style={{ marginLeft: "-150px", width: "400px", height: "300px", display: glMode ? 'block' : 'none' }} />
                     {!glMode && <div className={cn('orb',
                         isSpeaking ? 'animate-orb' : (conversation && 'animate-orb-slow'),
@@ -337,7 +337,7 @@ export function ConvAI() {
                 </div>
 
                 {mounted && (
-                    <div className="fixed bottom-[40px] md:bottom-[60px] left-1/2 transform -translate-x-1/2">
+                    <div className="fixed bottom-[40px] md:bottom-[60px] left-1/2 transform -translate-x-1/2" suppressHydrationWarning={true}>
                         <Button
                             variant={'outline'}
                             className={'rounded-full select-none'}
